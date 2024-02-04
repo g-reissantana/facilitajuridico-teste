@@ -4,7 +4,6 @@ export default class Pg {
     private readonly client: Client
 
     private constructor() {
-        console.log(process.env.POSTGRES_HOST)
         this.client = new Client({
             port: 5432,
             host: process.env.POSTGRES_HOST,
