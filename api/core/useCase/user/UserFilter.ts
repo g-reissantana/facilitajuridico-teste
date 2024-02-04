@@ -21,7 +21,7 @@ export default class UserFilter implements UseCase<Input, Output> {
     constructor(private readonly repository: UserRepository) {}
 
     async exec({ type = TypeFilter.ALL, value }: Input) {
-        const users = await this.repository[`findBy${type}`](value)
+        const users = await this.repository[`filterBy${type}`](value)
 
         if (users) return users
 

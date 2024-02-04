@@ -8,7 +8,7 @@ export default class UserCreate implements UseCase<Input, void> {
     constructor(private readonly repository: UserRepository) {}
 
     async exec(user: Input): Promise<void> {
-        const userExists = await this.repository.findByEmail(user.email.value)
+        const userExists = await this.repository.filterByEmail(user.email.value)
         
         if (userExists.length > 0) throw new Error('User already exists') // return user exists
 

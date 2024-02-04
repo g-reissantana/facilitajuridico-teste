@@ -4,7 +4,7 @@ import UserRepository from '../repositories/UserRepository'
 
 export default class UserPg implements UserRepository {
     constructor(private readonly driver: Client) {}
-    async findByAll(input: string): Promise<User[] | void[]> {
+    async filterByAll(input: string): Promise<User[] | void[]> {
         const queryResult = await this.driver.query(
             'SELECT * FROM users WHERE email = $1 OR phone = $2 OR name = $3',
             [input, input, input]
@@ -15,7 +15,7 @@ export default class UserPg implements UserRepository {
         return users
     }
 
-    async findByEmail(email: string): Promise<User[] | void[]> {
+    async filterByEmail(email: string): Promise<User[] | void[]> {
         const queryResult = await this.driver.query(
             `SELECT * FROM users WHERE email = '${email}'`
         )
@@ -24,7 +24,7 @@ export default class UserPg implements UserRepository {
 
         return users
     }
-    async findByPhone(phone: string): Promise<User[] | void[]> {
+    async filterByPhone(phone: string): Promise<User[] | void[]> {
         const queryResult = await this.driver.query(
             `SELECT * FROM users WHERE phone = '${phone}'`
         )
@@ -33,7 +33,7 @@ export default class UserPg implements UserRepository {
 
         return users
     }
-    async findByName(name: string): Promise<User[] | void[]> {
+    async filterByName(name: string): Promise<User[] | void[]> {
         const queryResult = await this.driver.query(
             `SELECT * FROM users WHERE email = '${name}'`
         )

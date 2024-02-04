@@ -1,9 +1,9 @@
 import User from "../domain/User"
 
 export default interface UserRepository {
-    findByEmail(email: string): Promise<User[] | void[]>
-    findByPhone(phone: string): Promise<User[] | void[]>
-    findByName(name: string): Promise<User[] | void[]>
-    findByAll(input: string): Promise<User[] | void[]>
+    filterByEmail(email: string): Promise<User[] | void[]>
+    filterByPhone(phone: string): Promise<User[] | void[]>
+    filterByName(name: string): Promise<User[] | void[]>
+    filterByAll(input: string): Promise<User[] | void[]>
     create(user: User): Promise<void>
 }
