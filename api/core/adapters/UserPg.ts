@@ -4,6 +4,15 @@ import UserRepository from '../repositories/UserRepository'
 
 export default class UserPg implements UserRepository {
     constructor(private readonly driver: Client) {}
+
+    async getAll(): Promise<User[] | void[]> {
+        const queryResult = await this.driver.query('SELECT * FROM users')
+
+        const users: User[] | [] = queryResult.rows
+
+        return users
+    }
+
     async filterByAll(input: string): Promise<User[] | void[]> {
         const queryResult = await this.driver.query(
             'SELECT * FROM users WHERE email = $1 OR phone = $2 OR name = $3',
