@@ -5,6 +5,40 @@ import UserRepository from '../repositories/UserRepository'
 export default class UserPg implements UserRepository {
     constructor(private readonly driver: Client) {}
 
+    async filter(filters: {
+        name: string
+        email: string
+        phone: string
+    }): Promise<User[] | void[]> {
+        if (!filters.name && !filters.email && !filters.phone) return []
+
+        let query = `SELECT * FROM users WHERE`
+        let queryIndex = 1
+        let queryArray = []
+
+        for (let [index, key] of Object.keys(filters).entries()) {
+            const keyWithType = key as keyof typeof filters
+
+            if (!filters[keyWithType]) continue
+            if (queryIndex == 1) {
+                query += ` ${key} = $${queryIndex}`
+                queryArray.push(filters[keyWithType])
+                queryIndex++
+                continue
+            }
+
+            query += ` AND ${key} = $${queryIndex}`
+            queryArray.push(filters[keyWithType])
+            queryIndex++
+        }
+
+        const queryResult = await this.driver.query(query, queryArray)
+
+        const users: User[] | [] = queryResult.rows
+
+        return users
+    }
+
     async getAll(): Promise<User[] | void[]> {
         const queryResult = await this.driver.query('SELECT * FROM users')
 
@@ -26,7 +60,8 @@ export default class UserPg implements UserRepository {
 
     async filterByEmail(email: string): Promise<User[] | void[]> {
         const queryResult = await this.driver.query(
-            `SELECT * FROM users WHERE email = '${email}'`
+            `SELECT * FROM users WHERE email = $1`,
+            [email]
         )
 
         const users: User[] | [] = queryResult.rows
@@ -35,7 +70,8 @@ export default class UserPg implements UserRepository {
     }
     async filterByPhone(phone: string): Promise<User[] | void[]> {
         const queryResult = await this.driver.query(
-            `SELECT * FROM users WHERE phone = '${phone}'`
+            `SELECT * FROM users WHERE phone = $1`,
+            [phone]
         )
 
         const users: User[] | [] = queryResult.rows
@@ -44,7 +80,8 @@ export default class UserPg implements UserRepository {
     }
     async filterByName(name: string): Promise<User[] | void[]> {
         const queryResult = await this.driver.query(
-            `SELECT * FROM users WHERE email = '${name}'`
+            `SELECT * FROM users WHERE email = $1`,
+            [name]
         )
 
         const users: User[] | [] = queryResult.rows

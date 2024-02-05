@@ -5,6 +5,11 @@ export default interface UserRepository {
     filterByPhone(phone: string): Promise<User[] | void[]>
     filterByName(name: string): Promise<User[] | void[]>
     filterByAll(input: string): Promise<User[] | void[]>
+    filter(filters: {
+        name: string
+        email: string
+        phone: string
+    }): Promise<User[] | void[]>
     getAll(): Promise<User[] | void[]>
     create(user: User): Promise<void>
 }

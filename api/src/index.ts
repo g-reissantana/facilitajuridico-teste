@@ -27,7 +27,11 @@ app.listen(PORT, async () => {
             '2',
         ])
 
-        const res = await calculateRoute.exec()
+        await userFilter.exec({
+            name: "gabriel",
+            email: "gabriel@teste.com",
+            phone: ""
+        })
 
     } catch (err: any) {
         console.error(err)

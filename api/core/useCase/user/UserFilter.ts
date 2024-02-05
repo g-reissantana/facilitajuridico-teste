@@ -1,4 +1,5 @@
 import User from '../../domain/User'
+import Email from '../../domain/valueObjects/Email'
 import UserRepository from '../../repositories/UserRepository'
 import UseCase from '../UseCase'
 
@@ -10,9 +11,15 @@ export enum TypeFilter {
     EMAIL = 'Email',
 }
 
+// type Input = {
+//     type?: TypeFilter
+//     value: string
+// }
+
 type Input = {
-    type?: TypeFilter
-    value: string
+    name: string
+    phone: string
+    email: string
 }
 
 type Output = User[] | void[]
@@ -20,8 +27,9 @@ type Output = User[] | void[]
 export default class UserFilter implements UseCase<Input, Output> {
     constructor(private readonly repository: UserRepository) {}
 
-    async exec({ type = TypeFilter.ALL, value }: Input) {
-        const users = await this.repository[`filterBy${type}`](value)
+    async exec(search: Input) {
+        
+        const users = await this.repository.filter(search)
 
         if (users) return users
 
