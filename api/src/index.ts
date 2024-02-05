@@ -5,6 +5,7 @@ import UserPg from '../core/adapters/UserPg'
 import UserFilter, { TypeFilter } from '../core/useCase/user/UserFilter'
 import UserCreate from '../core/useCase/user/UserCreate'
 import User from '../core/domain/User'
+import CalculateBestRoute from '../core/useCase/CalculateBestRoute'
 dotenv.config()
 
 const app = express()
@@ -20,14 +21,13 @@ app.listen(PORT, async () => {
 
         const userFilter = new UserFilter(repo)
         const userCreate = new UserCreate(repo)
+        const calculateRoute = new CalculateBestRoute(repo)
         const usr = new User('gabriel', 'gabriel@teste.com', '7999851620', [
             '1',
             '2',
         ])
 
-        userFilter.exec({
-            value: 'gabriel',
-        })
+        const res = await calculateRoute.exec()
 
     } catch (err: any) {
         console.error(err)

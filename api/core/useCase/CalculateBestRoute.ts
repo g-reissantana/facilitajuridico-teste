@@ -1,3 +1,4 @@
+import PathFabric from '../adapters/SetPath'
 import User from '../domain/User'
 import UserRepository from '../repositories/UserRepository'
 import UseCase from './UseCase'
